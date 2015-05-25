@@ -27,7 +27,7 @@ Write the above dataset to a text file.
 
 [1] "subject"    - Gives the unique ID of a particular test subject
 [2] "Activity"   - Activity being measured                        
-[3] "tBodyAcc_mean___X"    
+[3] "tBodyAcc_mean___X"  - Mean of the measurement "tBodyAcc_mean" by subject & Activity  
 [4] "tBodyAcc_mean___Y"                   
 [5] "tBodyAcc_mean___Z"    
 [6] "tGravityAcc_mean___X"                
