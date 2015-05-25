@@ -34,17 +34,19 @@ test_all <- bind_cols(tests, testy2[2], testx)
 Activity_Data <- rbind_list(train_all, test_all)
 
 ## Extracting only the "mean()" & "std()" variables
+
 AD_subset1 <- select(Activity_Data, contains("mean__", ignore.case=TRUE))
 AD_subset2 <- select(Activity_Data, contains("std__", ignore.case=TRUE))
 
+## Combining the mean & std variables with the subject, activity variables
 AD_subset <- bind_cols(Activity_Data[1:2], AD_subset1, AD_subset2)
 
-AD1 <- tbl_df(AD_subset)
+AD1 <- data.table(AD_subset)
 
-by_AD <- group_by(AD1, subject, Activity)
-
+## Step-5 : average of each variable for each activity and each subject.
 tidy1 <- AD1[, lapply(.SD, mean), by = list(subject, Activity)]
 
+## Saving the dataset to text file
 write.table(tidy1, "./tidy1.txt",row.names=FALSE)
 
 
