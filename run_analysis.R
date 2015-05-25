@@ -43,7 +43,9 @@ AD1 <- tbl_df(AD_subset)
 
 by_AD <- group_by(AD1, subject, Activity)
 
-tidy1 <- summarize(by_AD,mean)
+tidy1 <- AD1[, lapply(.SD, mean), by = list(subject, Activity)]
+
+write.table(tidy1, "./tidy1.txt",row.names=FALSE)
 
 
  
