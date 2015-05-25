@@ -7,17 +7,25 @@ unzip("./UCI HAR Dataset.zip")
 library(dplyr)
 library(data.table)
 
+## Read Activity labels
 activity_labels <- read.table("./UCI HAR Dataset/activity_labels.txt")
+
+## Read the column names from the features text file
 varnames <- read.table("./UCI HAR Dataset/features.txt")
+
+## Replace punctuation characters from the column names like ['('; ')'; ','; '-'] with "_" (underscore)
+## character so that they can be assigned as valid column names when X_*.txt files are read in 
 vname <- gsub("\\(|\\)|\\,|\\-","_",varnames$V2, useBytes=TRUE, perl=TRUE)
 
 ## Read in TRAIN data
 trainx <- read.table("./UCI HAR Dataset/train/X_train.txt", header=FALSE, nrow=7500, col.names=vname)
 trains <- read.table("./UCI HAR Dataset/train/subject_train.txt", header=FALSE, nrow=7500, col.names="subject")
 trainy <- read.table("./UCI HAR Dataset/train/y_train.txt", header=FALSE, nrow=7500)
+## getting the decode of activity labels
 trainy2 <- merge(trainy, activity_labels)
 names(trainy2) <- c("V1", "Activity")
 
+## combine all training data
 train_all <- bind_cols(trains, trainy2[2], trainx)
 
 ## Read in TEST data
@@ -27,10 +35,11 @@ testy <- read.table("./UCI HAR Dataset/test/y_test.txt", header=FALSE, nrow=3000
 testy2 <- merge(testy, activity_labels)
 names(testy2) <- c("V1", "Activity")
 
+## combine all test data
 test_all <- bind_cols(tests, testy2[2], testx)
 
 
-## Combine all the data
+## Combine all the data - train & test
 Activity_Data <- rbind_list(train_all, test_all)
 
 ## Extracting only the "mean()" & "std()" variables
